@@ -16,6 +16,7 @@ extern "C" {
 #endif
 
     
+    /*singleton object*/
     struct Controller{
         struct Block piCascade[3];
         struct Block motorBlock;

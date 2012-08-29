@@ -80,5 +80,3 @@ const struct Transition *mControlLogicTt[24] = {
 struct Machine mControlLogic = {
     6,4,&tInitial,&mControlLogicTt[0],NULL, -1,
     S1_STANDBY};
-
-//struct Machine *mControlLogic = &mControlLogicStruct;

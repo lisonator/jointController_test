@@ -23,19 +23,19 @@ int controllerInitialize(void)
     int i;
     controller.input = 0.0;
 
-    error = piInitialization(&controller.piCascade[0], 
+    error = initializePi(&controller.piCascade[0], 
             curpiparameters, 6,
             curpisignals, 2,
             1, 1) || error;
-    error = piInitialization(&controller.piCascade[1], 
+    error = initializePi(&controller.piCascade[1], 
             velpiparameters, 6,
             velpisignals, 2,
             1, 1) || error;
-    error = piInitialization(&controller.piCascade[2], 
+    error = initializePi(&controller.piCascade[2], 
             pospiparameters, 6,
             pospisignals, 2,
             1, 1) || error;
-    error = motorBlockInitialization(&controller.motorBlock, 
+    error = initializeMotorBlock(&controller.motorBlock, 
             motorparameters, 5,
             motorsignals, 3,
             1, 3) || error;

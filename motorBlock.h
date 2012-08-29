@@ -23,7 +23,7 @@ extern "C" {
      * inputs[1]:
      * voltage(k)
      */
-    int motorBlockInitialization(Block *, 
+    int initializeMotorBlock(Block *, 
         float *parameters, int nParameters,
         float *signals, int nSignals,
         int nInputs, int nOutputs);

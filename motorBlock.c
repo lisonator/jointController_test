@@ -3,7 +3,7 @@
 static int motorBlockCompute(Block *,
             const float *inputs, int nInputs);
 
-int motorBlockInitialization(Block *this, 
+int initializeMotorBlock(Block *this, 
         float *parameters, int nParameters,
         float *signals, int nSignals,
         int nInputs, int nOutputs)
@@ -17,12 +17,9 @@ int motorBlockInitialization(Block *this,
     if(nInputs!=1)
         return(EXIT_FAILURE);
     
-    this->parameters = parameters;
-    this->signals = signals;
-    this->nParameters = nParameters;
-    this->nSignals = nSignals;
-    this->nInputs = nInputs;
-    this->nOutputs = nOutputs;
+    initializeBlock(this,parameters,nParameters,
+            signals,nSignals,
+            nInputs,nOutputs);
 
     this->compute = &motorBlockCompute;
     
