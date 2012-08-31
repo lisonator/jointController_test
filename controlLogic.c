@@ -18,60 +18,60 @@ enum events{
 
 
     
-int init(void){
+static int init(struct Machine *m){
     printf("initializing...\n");
     return(controllerInitialize());
 }
-int run(void){
+static int run(struct Machine *m){
     printf("running...\n");
     return(EXIT_SUCCESS);
 }
-int stop(void){
+static int stop(struct Machine *m){
     printf("stopping...\n");
     return(EXIT_SUCCESS);
 }
-int brake(void){
+static int brake(struct Machine *m){
     printf("braking...\n");
     controllerBrake();
     return(EXIT_SUCCESS);
 }
-int process(void){
+static int process(struct Machine *m){
     printf("processing...\n");
     controllerProcess();
     return(EXIT_SUCCESS);
 }
-int safeProcess(void){
+static int safeProcess(struct Machine *m){
     printf("safe_processing...\n");
     controllerProcess();
     return(EXIT_SUCCESS);
 }
-int onCrash(void){
+static int onCrash(struct Machine *m){
     printf("I crashed!!!\n");
     return(EXIT_SUCCESS);
 }
-int recover(void){    
+static int recover(struct Machine *m){    
     printf("recovering...");
     return(EXIT_SUCCESS);
 }
 
-struct Transition tInitial = {S1_STANDBY, &init, NULL};
+static struct Transition tInitial = {S1_STANDBY, &init, NULL};
 /*from S1_STANDBY*/
-const struct Transition t12 = {S2_RUNNING, &run, NULL};
+struct Transition t12 = {S2_RUNNING, &run, NULL};
 /*from S2_RUNNING*/
-const struct Transition t21 = {S1_STANDBY, &stop, NULL};
-const struct Transition t22 = {S2_RUNNING, &process, NULL};
-const struct Transition t23 = {S3_SAFE_MODE, &brake, NULL};
-const struct Transition t24 = {S4_CRASHED, &onCrash, NULL};
+struct Transition t21 = {S1_STANDBY, &stop, NULL};
+struct Transition t22 = {S2_RUNNING, &process, NULL};
+struct Transition t23 = {S3_SAFE_MODE, &brake, NULL};
+struct Transition t24 = {S4_CRASHED, &onCrash, NULL};
 /*from S3_SAFE_MODE*/
-const struct Transition t31 = {S1_STANDBY, &stop, NULL};
-const struct Transition t32 = {S2_RUNNING, &run, NULL};
-const struct Transition t33 = {S3_SAFE_MODE, &safeProcess, NULL};
-const struct Transition t34 = {S4_CRASHED, &onCrash, NULL};
+struct Transition t31 = {S1_STANDBY, &stop, NULL};
+struct Transition t32 = {S2_RUNNING, &run, NULL};
+struct Transition t33 = {S3_SAFE_MODE, &safeProcess, NULL};
+struct Transition t34 = {S4_CRASHED, &onCrash, NULL};
 /*from S4_CRASHED*/
-const struct Transition t41 = {S1_STANDBY, &recover, NULL};
+struct Transition t41 = {S1_STANDBY, &recover, NULL};
 
 /*transition table*/
-const struct Transition *mControlLogicTt[24] = {
+struct Transition *mControlLogicTt[24] = {
     &t12,NULL,NULL,NULL,NULL,NULL, //from S1_STANDBY
     NULL,&t21,&t23,&t22,&t24,NULL, //from S2_RUNNING
     &t32,&t31,NULL,&t33,&t34,NULL, //from S3_SAFE_MODE

@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include "controlLogic.h"
 #include "controller.h"
+#include "circularBuffer.h"
+#include "block.h"
+#include "blockLogger.h"
+#include <assert.h>
 /*
  * 
  */
@@ -29,33 +33,59 @@ int main(int argc, char** argv) {
     float pisignals[] = {0.0, 0.0};
     float input = 4;
     int event;
-    int ret;
+    int ret,i,j;
+    runMachine(&mControlLogic);
+    //test blocklogger
+    float st[18];
+    for(ret=0;ret<18;ret++)
+        st[ret]=0;
+    struct BlockLogger bl;
+    initializeBlockLogger(&bl,&(controller.motorBlock),st,18);
+    
+    for(i=0;i<6;++i) {
+        for(j=0;j<3;j++)
+            printf("%3.3f ",st[3*i+j]);
+            printf("\n");}
+    
+    //test blocklogger end
+    
+    
     
     //tInitial.action = &init;
     event = 1;
         
     
     printstate(&mControlLogic);
-    initializeMachine(&mControlLogic);
-    printstate(&mControlLogic);
     
     controller.input=1.0;
     
     while(1){
     printf("event: ");
-    fflush(stdout);
     scanf("%d",&event);
-    fflush(stdout);
     printf("%d \n", event);
-    fflush(stdout);
-    if(event>10)
-        break;
+    if(event==10)
+        flushBl(&bl);
+    if(event==11)
+        startBl(&bl);    
+    if(event==12)
+        pauseBl(&bl);
+    if(event==13)
+        stopBl(&bl);
+    if(event==14)
+        handleEvent(&bl.logic,3);
+    if(event==99)
+        return(0);
     ret = handleEvent(&mControlLogic,event);
+    
     if(event==3 && !ret)
         printmotor();
     printf("eventret: %d\n",ret);
     fflush(stdout);
-    printstate(&mControlLogic);
+    //printstate(&mControlLogic);
+    for(i=0;i<6;++i) {
+        for(j=0;j<3;j++)
+            printf("%3.3f ",st[3*i+j]);
+            printf("\n");}
     }
     
     
